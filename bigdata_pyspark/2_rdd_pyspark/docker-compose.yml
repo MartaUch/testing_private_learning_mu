@@ -1,0 +1,16 @@
+name: "pyspark-notebook"   # Nazwa projektu docker-compose (służy głównie do identyfikacji, np. w poleceniu `docker-compose ps`)
+
+services:                   # Sekcja definiująca wszystkie kontenery/usługi w projekcie
+  jupyterlab:               # Nazwa usługi – w tym przypadku kontenera JupyterLab
+    image: jupyter/pyspark-notebook:x86_64-spark-3.5.0  # Obraz Dockera, który zostanie użyty do uruchomienia kontenera
+                                                           # - zawiera JupyterLab, Pyspark 3.5.0 i zależności
+    ports:                   # Mapowanie portów kontenera na hosta
+      - 8888:8888            # Port 8888 kontenera (JupyterLab) będzie dostępny na porcie 8888 hosta
+      - 4040:4040            # Port 4040 kontenera (Spark UI) będzie dostępny na porcie 4040 hosta
+    volumes:                 # Mapowanie katalogów hosta do kontenera
+      - ./notebook:/home/jovyan/work  # Lokalny folder `./notebook` zostanie podłączony jako `/home/jovyan/work` w kontenerze
+                                        # - `/home/jovyan/work` to domyślny katalog startowy notebooków w tym obrazie
+    environment:             # Zmienne środowiskowe ustawiane w kontenerze
+      - JUPYTER_ENABLE_LAB=yes        # Włącza JupyterLab zamiast klasycznego Jupyter Notebook
+      - JUPYTER_TOKEN=pyspark_2025    # Ustawia token do logowania się do JupyterLab (zabezpieczenie hasłem)
+

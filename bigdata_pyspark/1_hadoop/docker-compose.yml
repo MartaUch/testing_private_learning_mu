@@ -1,0 +1,11 @@
+# narzędzie do uruchamiania wielu kontenerów Dockera jednocześnie — za pomocą jednego pliku konfiguracyjnego
+
+version: '3.8'               # Wersja składni Docker Compose
+
+services:                    # Definicja usług (kontenerów)
+  hadoop:                    # Nazwa usługi (kontenera)
+    build: .                 # Buduje obraz z Dockerfile w bieżącym katalogu
+    container_name: hadoop   # Ustalona nazwa kontenera
+    volumes:                 # Montowanie plików/katalogów
+      - ./data.txt:/hadoop-3.3.6/data.txt   # Lokalny plik data.txt -> wewnątrz kontenera
+    tty: true                # Umożliwia interaktywny terminal (np. bash w kontenerze)

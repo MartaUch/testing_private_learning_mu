@@ -1,0 +1,28 @@
+# Plik konfiguracyjny, który zawiera instrukcje potrzebne do zbudowania obrazu Dockera.
+
+# Bazowy obraz Ubuntu
+FROM ubuntu:22.04
+
+# Zainstaluj Java (OpenJDK)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+        tar \
+        openjdk-17-jdk \
+    && rm -rf /var/lib/apt/lists/*
+
+# Ustaw zmienną środowiskową JAVA_HOME
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
+
+# Pobierz i rozpakuj Hadoop 3.3.6
+RUN curl https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz --output hadoop-3.3.6.tar.gz && \
+    tar -xvf hadoop-3.3.6.tar.gz && \
+    rm hadoop-3.3.6.tar.gz
+
+# Ustaw zmienną środowiskową HADOOP_HOME
+ENV HADOOP_HOME=/hadoop-3.3.6
+ENV PATH="$HADOOP_HOME/bin:$PATH"
+
+# Domyślna komenda po uruchomieniu kontenera
+CMD ["bash"]
